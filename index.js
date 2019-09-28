@@ -46,6 +46,14 @@ app.get('/api/courses/:id', (req, res) => {
 // post request test. each post will return a response with the course data inreasesd by.
 // this can be tested in postman.
 app.post('/api/courses', (req, res) => {
+
+    // basic validation example
+    if (!req.body.name || req.body.name.length < 3) {
+        res.status(400 ).send('name is required and should be minimum 4 characters');
+        return;
+    }
+    // TODO use joi dependancy instead...
+
     const course = {
         id: courses.length + 1,
         name: req.body.name
