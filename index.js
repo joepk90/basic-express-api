@@ -1,8 +1,17 @@
-const Joi = require('joi');  
+const Joi = require('joi'); 
 const express = require('express');
 const app = express();
 
+// custom requires
+const logger = require('./logger'); 
+const authenticate = require('./authentication.js');
+
+// middleware
 app.use(express.json());
+app.use(express.urlencoded( { extended: true } )); // accept url encoded requests (key=value&key&value)
+app.use(express.static('public')); // serve static content (http://localhost:3000/readme.txt)
+app.use(logger);
+app.use(authenticate);
 
 const courses = [
     {id: 1, name: 'course1'},
