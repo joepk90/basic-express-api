@@ -26,7 +26,9 @@ app.get('/api/courses/:id', (req, res) => {
     const course = courses.find(c => c.id === parseInt(req.params.id));
 
     // if course id does not exist return 404
-    if(!course) res.status(404).send('The course with the given ID was not found.')
+    if(!course) {
+        return res.status(404).send('The course with the given ID was not found.')
+    }
 
     // else return the course data
     res.send(course); 
@@ -57,8 +59,7 @@ app.post('/api/courses', (req, res) => {
  // object destructoring
  const { error } = validateCourse(req.body);
  if (error) {
-     res.status(400 ).send(error.details[0].message);
-         return;
+    return res.status(400 ).send(error.details[0].message);
  }
 
     
