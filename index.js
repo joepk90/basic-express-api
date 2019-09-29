@@ -54,16 +54,12 @@ app.post('/api/courses', (req, res) => {
 //     return;
 // }
 
-// validation using joi dependancy
-const schema = {
-    name: Joi.string().min(3).required()
-}
-
-const result = Joi.validate(req.body, schema);
-if (result.error) {
-    res.status(400 ).send(result.error.details[0].message);
-        return;
-}
+ // object destructoring
+ const { error } = validateCourse(req.body);
+ if (error) {
+     res.status(400 ).send(error.details[0].message);
+         return;
+ }
 
     
 
@@ -75,6 +71,37 @@ if (result.error) {
     res.send(course);
 });
 
+// example PUT request
+app.put('/api/courses/:id', (req, res) => {
+
+    // check if the course exists
+    const course = courses.find(c => c.id === parseInt(req.params.id));
+
+    // if course id does not exist return 404
+    if(!course) res.status(404).send('The course with the given ID was not found.')
+
+    // object destructoring
+    const { error } = validateCourse(req.body);
+    if (error) {
+        res.status(400 ).send(error.details[0].message);
+            return;
+    }
+
+    course.name = req.body.name
+    res.send(course);
+
+});
+
+function validateCourse(course) {
+
+    // validation using joi dependancy
+    const schema = {
+        name: Joi.string().min(3).required()
+    }
+
+    return Joi.validate(course, schema);
+
+}
 
 // $ export PORT=5000
 const port = process.env.PORT || 3000
