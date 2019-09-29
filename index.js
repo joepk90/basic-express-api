@@ -16,7 +16,7 @@ app.get('/', (reg, res) => {
 
 // return all courses
 app.get('/api/courses', (req, res) => {
-    res.send([1,2,3]);
+    res.send(courses);
 });
 
 // return course by id
