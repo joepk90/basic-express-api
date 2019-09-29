@@ -26,6 +26,10 @@ const authenticate = require('./authentication.js');
 // start application
 const app = express();
 
+app.set('view engine', 'pug'); // [pug, mustache, EJS] (pug is jade)
+// app.set('views', './views'); // default is ./views
+
+
 // express default middleware
 app.use(express.json());
 app.use(express.urlencoded( { extended: true } )); // accept url encoded requests (key=value&key&value)
@@ -63,7 +67,7 @@ const courses = [
 ];
 
 app.get('/', (reg, res) => {
-    res.send('hello world!');
+    res.render('index', {title: 'My Express App', message: 'hello'} )
 });
 
 // return all courses
