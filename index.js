@@ -1,6 +1,16 @@
 
 const config = require('config');
 
+// debuging configuration
+const startupDebugger = require('debug')('app:startup'); // $ export DEBUG=app:startup
+const dbDebugger = require('debug')('app:db'); // $ export DEBUG=app:db 
+
+// to see multiple debug messages:
+// $ export DEBUG=app:startup,app:db
+
+// to see all DEBUG messages:
+// $ export DEBUG=*
+
 // express middleware dependancies
 const helmet = require('helmet'); // sets various headers to increase your apps security
 const morgan = require('morgan'); // generates access logs. by defualt logs are printed to the console
@@ -29,7 +39,7 @@ app.use(helmet());
 // check environment: (process.env.NODE_ENV)
 if (app.get('env') === 'development') {
     app.use(morgan('tiny'));
-    console.log('morgan enabled...');
+    startupDebugger('morgan enabled...');
 }
 
 // configuration
@@ -169,6 +179,9 @@ function validateCourse(course) {
     return Joi.validate(course, schema);
 
 }
+
+// db work
+dbDebugger('example: connected to the database');
 
 // $ export PORT=5000
 const port = process.env.PORT || 3000
