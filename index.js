@@ -12,12 +12,20 @@ const logger = require('./logger');
 const authenticate = require('./authentication.js');
 
 // start application
-
 const app = express();
+
 
 // express middleware addons
 app.use(helmet());
-app.use(morgan('tiny'));
+
+// default is development
+// to change environement, run $ export NODE_ENV=production
+// check environment: (process.env.NODE_ENV)
+if (app.get('env') === 'development') {
+    app.use(morgan('tiny'));
+    console.log('morgan enabled...');
+}
+
 
 // express default middleware
 app.use(express.json());
