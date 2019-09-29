@@ -1,4 +1,6 @@
 
+const config = require('config');
+
 // express middleware dependancies
 const helmet = require('helmet'); // sets various headers to increase your apps security
 const morgan = require('morgan'); // generates access logs. by defualt logs are printed to the console
@@ -14,6 +16,10 @@ const authenticate = require('./authentication.js');
 // start application
 const app = express();
 
+// express default middleware
+app.use(express.json());
+app.use(express.urlencoded( { extended: true } )); // accept url encoded requests (key=value&key&value)
+app.use(express.static('public')); // serve static content (http://localhost:3000/readme.txt)
 
 // express middleware addons
 app.use(helmet());
@@ -26,11 +32,13 @@ if (app.get('env') === 'development') {
     console.log('morgan enabled...');
 }
 
+// configuration
+console.log(`Application Name: ${config.get('name')}`)
+console.log(`Mail Server: ${config.get('mail.host')}`)
 
-// express default middleware
-app.use(express.json());
-app.use(express.urlencoded( { extended: true } )); // accept url encoded requests (key=value&key&value)
-app.use(express.static('public')); // serve static content (http://localhost:3000/readme.txt)
+// custom-environment-variables.json file is used to define mapping of custom variables.
+// to set custom variables, use $export VARIABLE_NAME=VARIABLE_VALUE
+console.log(`Mail Password: ${config.get('mail.password')}`)
 
 // custom middleware
 app.use(logger);
