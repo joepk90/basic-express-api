@@ -1,17 +1,34 @@
+
+// express middleware dependancies
+const helmet = require('helmet'); // sets various headers to increase your apps security
+const morgan = require('morgan'); // generates access logs. by defualt logs are printed to the console
+
+// express dependancies
 const Joi = require('joi'); 
 const express = require('express');
-const app = express();
 
 // custom requires
 const logger = require('./logger'); 
 const authenticate = require('./authentication.js');
 
-// middleware
+// start application
+
+const app = express();
+
+// express middleware addons
+app.use(helmet());
+app.use(morgan('tiny'));
+
+// express default middleware
 app.use(express.json());
 app.use(express.urlencoded( { extended: true } )); // accept url encoded requests (key=value&key&value)
 app.use(express.static('public')); // serve static content (http://localhost:3000/readme.txt)
+
+// custom middleware
 app.use(logger);
 app.use(authenticate);
+
+// routes
 
 const courses = [
     {id: 1, name: 'course1'},
