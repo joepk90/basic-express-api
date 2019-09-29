@@ -1,3 +1,4 @@
+const Joi = require('joi');  
 const express = require('express');
 const app = express();
 
@@ -47,12 +48,24 @@ app.get('/api/courses/:id', (req, res) => {
 // this can be tested in postman.
 app.post('/api/courses', (req, res) => {
 
-    // basic validation example
-    if (!req.body.name || req.body.name.length < 3) {
-        res.status(400 ).send('name is required and should be minimum 4 characters');
+// basic validation example
+// if (!req.body.name || req.body.name.length < 3) {
+//     res.status(400 ).send('name is required and should be minimum 4 characters');
+//     return;
+// }
+
+// validation using joi dependancy
+const schema = {
+    name: Joi.string().min(3).required()
+}
+
+const result = Joi.validate(req.body, schema);
+if (result.error) {
+    res.status(400 ).send(result.error.details[0].message);
         return;
-    }
-    // TODO use joi dependancy instead...
+}
+
+    
 
     const course = {
         id: courses.length + 1,
