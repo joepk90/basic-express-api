@@ -76,9 +76,6 @@ if (result.error) {
 });
 
 
-// TODO install nodemon - then run the application using nodemon index.js
-// setting env variables via terminal - export PORT=5000
-
 // $ export PORT=5000
 const port = process.env.PORT || 3000
 
